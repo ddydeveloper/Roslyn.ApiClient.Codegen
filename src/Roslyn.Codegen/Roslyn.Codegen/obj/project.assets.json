@@ -7102,10 +7102,10 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen\\Roslyn.Codegen.csproj",
+      "projectUniqueName": "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen\\Roslyn.Codegen.csproj",
       "projectName": "Roslyn.Codegen",
-      "projectPath": "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen\\Roslyn.Codegen.csproj",
-      "outputPath": "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen\\obj\\",
+      "projectPath": "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen\\Roslyn.Codegen.csproj",
+      "outputPath": "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.1"
@@ -7113,8 +7113,8 @@
       "frameworks": {
         "netcoreapp1.1": {
           "projectReferences": {
-            "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen.ApiClient\\Roslyn.Codegen.ApiClient.csproj": {
-              "projectPath": "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen.ApiClient\\Roslyn.Codegen.ApiClient.csproj"
+            "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen.ApiClient\\Roslyn.Codegen.ApiClient.csproj": {
+              "projectPath": "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen.ApiClient\\Roslyn.Codegen.ApiClient.csproj"
             }
           }
         }

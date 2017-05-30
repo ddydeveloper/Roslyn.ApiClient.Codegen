@@ -7042,10 +7042,10 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen.Misc\\Roslyn.Codegen.Misc.csproj",
+      "projectUniqueName": "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen.Misc\\Roslyn.Codegen.Misc.csproj",
       "projectName": "Roslyn.Codegen.Misc",
-      "projectPath": "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen.Misc\\Roslyn.Codegen.Misc.csproj",
-      "outputPath": "C:\\Users\\paran_000\\Documents\\Visual Studio 2017\\Projects\\Roslyn.Codegen\\Roslyn.Codegen.Misc\\obj\\",
+      "projectPath": "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen.Misc\\Roslyn.Codegen.Misc.csproj",
+      "outputPath": "D:\\Projects\\Roslyn.Codegen\\src\\Roslyn.Codegen\\Roslyn.Codegen.Misc\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.1"
