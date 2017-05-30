@@ -1,0 +1,13 @@
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.deps.json
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.runtimeconfig.json
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.runtimeconfig.dev.json
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.dll
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\obj\Debug\netcoreapp1.1\Roslyn.Codegen.csprojResolveAssemblyReference.cache
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\obj\Debug\netcoreapp1.1\Roslyn.Codegen.AssemblyInfo.cs
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.pdb
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\obj\Debug\netcoreapp1.1\Roslyn.Codegen.dll
+c:\users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\obj\Debug\netcoreapp1.1\Roslyn.Codegen.pdb
+C:\Users\paran_000\Documents\Visual Studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.dll
+C:\Users\paran_000\Documents\Visual Studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.pdb
+C:\Users\paran_000\Documents\Visual Studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.dll
+C:\Users\paran_000\Documents\Visual Studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.pdb
