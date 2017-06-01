@@ -16,16 +16,35 @@ namespace Roslyn.Codegen.ApiClient
                 .AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Collections.Generic")))
                 .AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("Roslyn.Codegen.ApiClient.Base")));
 
-            var classDeclaration = SyntaxFactory.ClassDeclaration($"{controllerInfo.Name}ClientApi")
+            var className = $"{controllerInfo.Name}ClientApi";
+
+            var classDeclaration = SyntaxFactory.ClassDeclaration(className)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
                 .AddBaseListTypes(SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName("BaseClientApi")));
+            
+            var classMembers = new List<MemberDeclarationSyntax>();
 
-            var classMethods = new List<MemberDeclarationSyntax>();
+            var fieldName = "entryPoint";
+
+            var variableDeclaration = SyntaxFactory.VariableDeclaration(SyntaxFactory.ParseTypeName("string"))
+                .AddVariables(SyntaxFactory.VariableDeclarator($"_{fieldName}"));
+
+            var fieldDeclaration = SyntaxFactory.FieldDeclaration(variableDeclaration)
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PrivateKeyword));
+
+            classMembers.Add(fieldDeclaration);
+
+            var ctorDeclaration = SyntaxFactory.ConstructorDeclaration(className)
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
+                .AddParameterListParameters(SyntaxFactory.Parameter(SyntaxFactory.Identifier("entryPoint")).WithType(SyntaxFactory.ParseTypeName(TypesHelper.GetTypeName(typeof(string)))))
+                .WithBody(SyntaxFactory.Block(SyntaxFactory.ParseStatement(($"_{fieldName} = {fieldName};"))));
+
+            classMembers.Add(ctorDeclaration);
 
             foreach (var methodInfo in controllerInfo.Methods)
             {
                 var parameters = new List<ParameterSyntax>();
-                var methodBody = methodInfo.Method.ToLowerInvariant() == "get"
+                var methodBody = methodInfo.Method == RestSharp.Method.GET
                     ? $"//Http get{Environment.NewLine}throw new NotImplementedException();"
                     : $"//Http post{Environment.NewLine}throw new NotImplementedException();";
 
@@ -40,10 +59,10 @@ namespace Roslyn.Codegen.ApiClient
                     .AddParameterListParameters(parameters.ToArray())
                     .WithBody(SyntaxFactory.Block(SyntaxFactory.ParseStatement((methodBody))));
 
-                classMethods.Add(methodDeclaration);
+                classMembers.Add(methodDeclaration);
             }
 
-            classDeclaration = classDeclaration.AddMembers(classMethods.ToArray());
+            classDeclaration = classDeclaration.AddMembers(classMembers.ToArray());
 
             @namespace  = @namespace.AddMembers(classDeclaration);
 

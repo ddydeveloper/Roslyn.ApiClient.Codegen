@@ -7,3 +7,12 @@ C:\Users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.C
 C:\Users\paran_000\documents\visual studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen.ApiClient\obj\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.pdb
 C:\Users\paran_000\Documents\Visual Studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen.ApiClient\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.dll
 C:\Users\paran_000\Documents\Visual Studio 2017\Projects\Roslyn.Codegen\Roslyn.Codegen.ApiClient\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.pdb
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\bin\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.deps.json
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\obj\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.csprojResolveAssemblyReference.cache
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\obj\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.AssemblyInfo.cs
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\obj\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.dll
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\obj\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.pdb
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\bin\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.dll
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\bin\Debug\netcoreapp1.1\Roslyn.Codegen.ApiClient.pdb
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.dll
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.ApiClient\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.pdb
