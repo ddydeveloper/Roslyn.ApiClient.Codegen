@@ -46,3 +46,5 @@ artifacts/
 *.*.user
 **/appsettings.json
 *.dbmdl
+/src/Roslyn.Codegen/.vs/Roslyn.Codegen/v15/*.suo
+/src/Roslyn.Codegen/Roslyn.Codegen/*.csproj
