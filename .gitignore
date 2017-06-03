@@ -1,3 +1,4 @@
 bin/
 obj/
 **/*.suo
+/src/Roslyn.Codegen/Roslyn.Codegen/Generated
