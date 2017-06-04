@@ -52,10 +52,10 @@ namespace Roslyn.Codegen.ApiClient
                     ? $"//Http get{Environment.NewLine}throw new NotImplementedException();"
                     : $"//Http post{Environment.NewLine}throw new NotImplementedException();";
 
-                foreach (var parameter in methodInfo.Parameters)
+                if (methodInfo.Data != null)
                 {
-                    parameters.Add(Parameter(Identifier(parameter.Item2))
-                        .WithType(ParseTypeName(TypesHelper.GetTypeName(parameter.Item1))));
+                    parameters.Add(Parameter(Identifier(methodInfo.Data.Item2))
+                        .WithType(ParseTypeName(TypesHelper.GetTypeName(methodInfo.Data.Item1))));
 
                     var methodDeclaration = MethodDeclaration(ParseTypeName($"{TypesHelper.GetTypeName(methodInfo.ReturnedType)}"), $"{methodInfo.Name}{methodInfo.Method}")
                        .AddModifiers(Token(SyntaxKind.PublicKeyword))

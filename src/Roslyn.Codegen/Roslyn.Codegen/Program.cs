@@ -1,5 +1,7 @@
 ﻿using Roslyn.Codegen.ApiClient;
+using Roslyn.Codegen.ApiClient.ApiMembersInfo;
 using Roslyn.Codegen.Engine;
+using System;
 using System.Collections.Generic;
 
 namespace Roslyn.Codegen
@@ -10,18 +12,17 @@ namespace Roslyn.Codegen
         {
             var controllerInfo = new ApiControllerInfo("Test");
 
-            var getMethod = new ApiMethodInfo("GetHttpMethod", RestSharp.Method.GET, typeof(int));
-            getMethod.Parameters.Add(new System.Tuple<System.Type, string>(typeof(int), "intParam"));
-            getMethod.Parameters.Add(new System.Tuple<System.Type, string>(typeof(string), "stringParam"));
+            var getMethod = new GetApiMethodInfo("HttpGet", typeof(List<int>), new Tuple<Type, string>(typeof(int), "id"));
             controllerInfo.Methods.Add(getMethod);
 
-            var postMethod = new ApiMethodInfo("PostHttpMethod", RestSharp.Method.POST, typeof(string));
-            postMethod.Parameters.Add(new System.Tuple<System.Type, string>(typeof(bool), "boolParam"));
-            postMethod.Parameters.Add(new System.Tuple<System.Type, string>(typeof(System.Tuple<int, int>), "tupleParam"));
+            var postMethod = new PostApiMethodInfo("HttpPost", typeof(string), new Tuple<Type, string>(typeof(bool), "isSuccess"));
             controllerInfo.Methods.Add(postMethod);
 
-            controllerInfo.Methods.Add(new ApiMethodInfo("PutHttpMethod", RestSharp.Method.PUT, typeof(List<int>)));
-            controllerInfo.Methods.Add(new ApiMethodInfo("DeleteHttpMethod", RestSharp.Method.DELETE, typeof(List<dynamic>)));
+            var deleteMethod = new GetApiMethodInfo("HttpDelete", typeof(Tuple<int, string>), new Tuple<Type, string>(typeof(decimal), "count"));
+            controllerInfo.Methods.Add(deleteMethod);
+
+            var putMethod = new PostApiMethodInfo("HttpPost", typeof(string), new Tuple<Type, string>(typeof(DateTime), "startDate"));
+            controllerInfo.Methods.Add(putMethod);
 
             FileHelper.GenerateFile(controllerInfo.Name, ApiClient.ApiClientGenerator.GetGeneratedApiClass(controllerInfo));
         }

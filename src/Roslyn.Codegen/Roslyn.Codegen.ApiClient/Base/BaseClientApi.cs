@@ -1,15 +1,19 @@
-﻿namespace Roslyn.Codegen.ApiClient.Base
+﻿using RestSharp;
+
+namespace Roslyn.Codegen.ApiClient.Base
 {
     /// <summary>
     /// Base REST API client implementation 
     /// </summary>
     public class BaseClientApi
     {
-        protected string EntryPoint { get; set; }
+        protected RestClient Client { get; private set; }
 
         public BaseClientApi(string entryPoint)
         {
-            EntryPoint = entryPoint;
+            Client = new RestClient(entryPoint);
         }
+
+        
     }
 }
