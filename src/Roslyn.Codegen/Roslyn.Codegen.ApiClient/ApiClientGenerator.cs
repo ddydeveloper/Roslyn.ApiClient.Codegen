@@ -1,6 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using RestSharp;
+using Roslyn.Codegen.ApiClient.Base;
 using Roslyn.Codegen.ApiClient.Helpers;
 using System;
 using System.Collections.Generic;
@@ -15,7 +17,11 @@ namespace Roslyn.Codegen.ApiClient
             var @namespace = NamespaceDeclaration(ParseName("Generated")).NormalizeWhitespace()
                 .AddUsings(UsingDirective(ParseName("System")))
                 .AddUsings(UsingDirective(ParseName("System.Collections.Generic")))
-                .AddUsings(UsingDirective(ParseName("Roslyn.Codegen.ApiClient.Base")));
+                .AddUsings(UsingDirective(ParseName("Roslyn.Codegen.ApiClient.Base")))
+                .AddUsings(UsingDirective(ParseName("Newtonsoft.Json")))
+                .AddUsings(UsingDirective(ParseName("RestSharp")))
+                .AddUsings(UsingDirective(ParseName("System.Threading.Tasks")))
+                .AddUsings(UsingDirective(ParseName("Roslyn.Codegen.ApiClient.Extensions")));
 
             var className = $"{controllerInfo.Name}ClientApi";
 
@@ -47,20 +53,15 @@ namespace Roslyn.Codegen.ApiClient
 
             foreach (var methodInfo in controllerInfo.Methods)
             {
-                var parameters = new List<ParameterSyntax>();
-                var methodBody = methodInfo.Method == RestSharp.Method.GET
-                    ? $"//Http get{Environment.NewLine}throw new NotImplementedException();"
-                    : $"//Http post{Environment.NewLine}throw new NotImplementedException();";
-
                 if (methodInfo.Data != null)
                 {
-                    parameters.Add(Parameter(Identifier(methodInfo.Data.Item2))
-                        .WithType(ParseTypeName(TypesHelper.GetTypeName(methodInfo.Data.Item1))));
+                    var parameter = Parameter(Identifier(methodInfo.Data.Item2))
+                        .WithType(ParseTypeName(TypesHelper.GetTypeName(methodInfo.Data.Item1)));
 
-                    var methodDeclaration = MethodDeclaration(ParseTypeName($"{TypesHelper.GetTypeName(methodInfo.ReturnedType)}"), $"{methodInfo.Name}{methodInfo.Method}")
-                       .AddModifiers(Token(SyntaxKind.PublicKeyword))
-                       .AddParameterListParameters(parameters.ToArray())
-                       .WithBody(Block(ParseStatement((methodBody))));
+                    var methodDeclaration = MethodDeclaration(ParseTypeName($"Task<{TypesHelper.GetTypeName(methodInfo.ReturnedType)}>"), $"{methodInfo.Name}")
+                       .AddModifiers(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.AsyncKeyword))
+                       .AddParameterListParameters(parameter)
+                       .WithBody(Block(ParseStatement(GetMethodBody(methodInfo, controllerInfo.Name))));
 
                     classMembers.Add(methodDeclaration);
                 }
@@ -72,6 +73,42 @@ namespace Roslyn.Codegen.ApiClient
 
             var classCode = @namespace.NormalizeWhitespace().ToFullString();
             return classCode;
+        }
+
+        private static string GetMethodBody(BaseApiMethodInfo methodInfo, string controllerName)
+        {
+            var startText = $"TaskCompletionSource<IRestResponse> taskCompletion = new TaskCompletionSource<IRestResponse>();{Environment.NewLine}var request = ";
+            var dataText = methodInfo.Data != null 
+                ? methodInfo.Data.Item2.ToString() 
+                : "null";
+
+            var methodParameters = $"\"{controllerName}\", \"{methodInfo.Name}\", {dataText}.ToString()";
+            string httpRequestText;
+            switch (methodInfo.Method)
+            {
+                case RestSharp.Method.GET:
+                    httpRequestText = $"RestSharpExtensions.GetRequest({methodParameters});";
+                    break;
+                case RestSharp.Method.POST:
+                    httpRequestText = $"RestSharpExtensions.PostRequest({methodParameters});";
+                    break;
+                case RestSharp.Method.PUT:
+                    httpRequestText = $"RestSharpExtensions.PutRequest({methodParameters});";
+                    break;
+                case RestSharp.Method.DELETE:
+                    httpRequestText = $"RestSharpExtensions.DeleteRequest({methodParameters});";
+                    break;
+                default:
+                    throw new ArgumentException("methodInfo.Method");                    
+            }
+
+            var requestText = $"{httpRequestText}";
+            var handleText = $"var handle = Client.ExecuteAsync({Environment.NewLine}request, r => taskCompletion.SetResult(r));";
+            var resultText = $"var response = await taskCompletion.Task;";
+            var returnText = $"return JsonConvert.DeserializeObject<{TypesHelper.GetTypeName(methodInfo.ReturnedType)}>(response.Content);";
+            var fullText = $"{startText}{httpRequestText}{Environment.NewLine}{handleText}{Environment.NewLine}{resultText}{Environment.NewLine}{returnText}";
+
+            return fullText;
         }
     }
 }
