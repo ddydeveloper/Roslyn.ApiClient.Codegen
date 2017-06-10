@@ -1,13 +1,11 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using RestSharp;
 using Roslyn.Codegen.ApiClient.Base;
 using Roslyn.Codegen.ApiClient.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslyn.Codegen.ApiClient
@@ -16,67 +14,94 @@ namespace Roslyn.Codegen.ApiClient
     {
         public static string GetGeneratedApiClass(ApiControllerInfo controllerInfo)
         {
-            var @namespace = NamespaceDeclaration(ParseName("Generated")).NormalizeWhitespace()
-                .AddUsings(UsingDirective(ParseName("System")))
-                .AddUsings(UsingDirective(ParseName("System.Collections.Generic")))
-                .AddUsings(UsingDirective(ParseName("Roslyn.Codegen.ApiClient.Base")))
-                .AddUsings(UsingDirective(ParseName("Newtonsoft.Json")))
-                .AddUsings(UsingDirective(ParseName("RestSharp")))
-                .AddUsings(UsingDirective(ParseName("System.Threading.Tasks")))
-                .AddUsings(UsingDirective(ParseName("Roslyn.Codegen.ApiClient.Extensions")));
-
             var className = $"{controllerInfo.Name}ClientApi";
-            var classMembers = new List<MemberDeclarationSyntax>();
-            var fieldName = "entryPoint";
 
+            //Add ApiClient contructor with params
+            var classMembers = new List<MemberDeclarationSyntax>
+            {
+                GetConstructorDeclaration(className, "entryPoint")
+            };
+            
+            //Add ApiController methods
+            foreach (var methodInfo in controllerInfo.Methods)
+            {
+                if (methodInfo.Data != null)
+                {
+                    classMembers.Add(GetMethodDeclaration(methodInfo, controllerInfo.Name));
+                }
+            }
+
+            //Create public ApiClient class which implement BaseClientApi base type
+            var classDeclaration = ClassDeclaration(className)
+                .AddModifiers(Token(SyntaxKind.PublicKeyword))
+                .AddBaseListTypes(SimpleBaseType(ParseTypeName("BaseClientApi")))
+                .AddMembers(classMembers.ToArray());
+
+            //Create namespace and adding created ApiClient class
+            var @namespace = NamespaceDeclaration(ParseName("ApiClient"))
+                .AddUsings(GetUsingDirectives().ToArray())
+                .AddMembers(classDeclaration);
+
+            return @namespace.NormalizeWhitespace().ToFullString();
+        }
+
+        #region Private static methods
+        
+        private static List<UsingDirectiveSyntax> GetUsingDirectives()
+        {
+            var result = new List<UsingDirectiveSyntax>
+            {
+                UsingDirective(ParseName("System")),
+                UsingDirective(ParseName("System.Collections.Generic")),
+                UsingDirective(ParseName("System.Threading.Tasks")),
+                UsingDirective(ParseName("Newtonsoft.Json")),
+                UsingDirective(ParseName("RestSharp")),
+                UsingDirective(ParseName("Roslyn.Codegen.ApiClient.Base")),
+                UsingDirective(ParseName("Roslyn.Codegen.ApiClient.Extensions"))
+            };
+
+            return result;
+        }
+
+        private static MemberDeclarationSyntax GetFieldDeclaration(string fieldName)
+        {
             var variableDeclaration = VariableDeclaration(ParseTypeName("string"))
                 .AddVariables(VariableDeclarator($"_{fieldName}"));
 
             var fieldDeclaration = FieldDeclaration(variableDeclaration)
                 .AddModifiers(Token(SyntaxKind.PrivateKeyword));
 
-            classMembers.Add(fieldDeclaration);
+            return fieldDeclaration;
+        }
 
+        private static ConstructorDeclarationSyntax GetConstructorDeclaration(string className, string argumentName)
+        {
             var ctorDeclaration = ConstructorDeclaration(className)
                 .AddModifiers(Token(SyntaxKind.PublicKeyword))
-                .AddParameterListParameters(Parameter(Identifier(fieldName))
+                .AddParameterListParameters(Parameter(Identifier(argumentName))
                 .WithType(ParseTypeName(TypesHelper.GetTypeName(typeof(string)))))
-                .WithBody(Block(ParseStatement(($"_{fieldName} = {fieldName};"))))
-                .WithInitializer(ConstructorInitializer(SyntaxKind.BaseConstructorInitializer).AddArgumentListArguments(Argument(IdentifierName("entryPoint"))));
+                .WithBody(Block(ParseStatement("")))
+                .WithInitializer(ConstructorInitializer(SyntaxKind.BaseConstructorInitializer).AddArgumentListArguments(Argument(IdentifierName(argumentName))));
 
-            classMembers.Add(ctorDeclaration);
+            return ctorDeclaration;
+        }
 
-            foreach (var methodInfo in controllerInfo.Methods)
-            {
-                if (methodInfo.Data != null)
-                {
-                    var returnedType = ParseTypeName($"Task<{TypesHelper.GetTypeName(methodInfo.ReturnedType)}>");
-                    var modifiers = new SyntaxToken[] { Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.AsyncKeyword) };
-                    var body = GetMethodBody(methodInfo, controllerInfo.Name);
-                    
-                    var parameter = Parameter(Identifier(methodInfo.Data.Item2))
-                        .WithType(ParseTypeName(TypesHelper.GetTypeName(methodInfo.Data.Item1)));
+        private static MethodDeclarationSyntax GetMethodDeclaration(BaseApiMethodInfo methodInfo, string controllerName)
+        {
+            var returnedType = ParseTypeName($"Task<{TypesHelper.GetTypeName(methodInfo.ReturnedType)}>");
+            var modifiers = new SyntaxToken[] { Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.AsyncKeyword) };
+            var body = GetMethodBody(methodInfo, controllerName);
 
-                    var methodDeclaration = MethodDeclaration(returnedType, $"{methodInfo.Name}")
-                       .AddModifiers(modifiers)
-                       .AddParameterListParameters(parameter)
-                       .WithBody(body)
-                       .WithConstraintClauses(List<TypeParameterConstraintClauseSyntax>())
-                       .WithAdditionalAnnotations(Formatter.Annotation);
+            var parameter = Parameter(Identifier(methodInfo.Data.Item2))
+                .WithType(ParseTypeName(TypesHelper.GetTypeName(methodInfo.Data.Item1)));
 
-                    classMembers.Add(methodDeclaration);
-                }
-            }
+            var methodDeclaration = MethodDeclaration(returnedType, $"{methodInfo.Name}")
+               .AddModifiers(modifiers)
+               .AddParameterListParameters(parameter)
+               .WithBody(body)
+               .WithConstraintClauses(List<TypeParameterConstraintClauseSyntax>());
 
-            var classDeclaration = ClassDeclaration(className)
-                .AddModifiers(Token(SyntaxKind.PublicKeyword))
-                .AddBaseListTypes(SimpleBaseType(ParseTypeName("BaseClientApi")))
-                .AddMembers(classMembers.ToArray());
-
-            @namespace = @namespace.AddMembers(classDeclaration);
-
-            var classCode = @namespace.NormalizeWhitespace().ToFullString();
-            return classCode;            
+            return methodDeclaration;
         }
 
         private static BlockSyntax GetMethodBody(BaseApiMethodInfo methodInfo, string controllerName)
@@ -118,5 +143,7 @@ namespace Roslyn.Codegen.ApiClient
 
             return Block(statements);
         }
+
+        #endregion //Private static methods
     }
 }
