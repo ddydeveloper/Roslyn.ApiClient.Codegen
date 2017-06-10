@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
 using RestSharp;
 using Roslyn.Codegen.ApiClient.Base;
 using Roslyn.Codegen.ApiClient.Helpers;
@@ -52,14 +53,16 @@ namespace Roslyn.Codegen.ApiClient
                     var returnedType = ParseTypeName($"Task<{TypesHelper.GetTypeName(methodInfo.ReturnedType)}>");
                     var modifiers = new SyntaxToken[] { Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.AsyncKeyword) };
                     var body = GetMethodBody(methodInfo, controllerInfo.Name);
+                    
                     var parameter = Parameter(Identifier(methodInfo.Data.Item2))
                         .WithType(ParseTypeName(TypesHelper.GetTypeName(methodInfo.Data.Item1)));
-                                        
-                    var methodDeclaration = 
-                        MethodDeclaration(returnedType, $"{methodInfo.Name}")
+
+                    var methodDeclaration = MethodDeclaration(returnedType, $"{methodInfo.Name}")
                        .AddModifiers(modifiers)
                        .AddParameterListParameters(parameter)
-                       .WithBody(body);
+                       .WithBody(body)
+                       .WithConstraintClauses(List<TypeParameterConstraintClauseSyntax>())
+                       .WithAdditionalAnnotations(Formatter.Annotation);
 
                     classMembers.Add(methodDeclaration);
                 }
@@ -69,16 +72,21 @@ namespace Roslyn.Codegen.ApiClient
                 .AddModifiers(Token(SyntaxKind.PublicKeyword))
                 .AddBaseListTypes(SimpleBaseType(ParseTypeName("BaseClientApi")))
                 .AddMembers(classMembers.ToArray());
-            
-            @namespace  = @namespace.AddMembers(classDeclaration);
+
+            @namespace = @namespace.AddMembers(classDeclaration);
 
             var classCode = @namespace.NormalizeWhitespace().ToFullString();
-            return classCode;
+            return classCode;            
         }
 
         private static BlockSyntax GetMethodBody(BaseApiMethodInfo methodInfo, string controllerName)
         {
-            var body = new StringBuilder($"var taskCompletion = new TaskCompletionSource<IRestResponse>();{Environment.NewLine}var request = ");
+            var statements = new List<StatementSyntax>
+            {
+                ParseStatement($"var taskCompletion = new TaskCompletionSource<IRestResponse>();")
+            };
+
+            var httpRequestBeginning = "var request = ";
             var dataText = methodInfo.Data != null 
                 ? methodInfo.Data.Item2.ToString() 
                 : "null";
@@ -88,27 +96,27 @@ namespace Roslyn.Codegen.ApiClient
             switch (methodInfo.Method)
             {
                 case Method.GET:
-                    httpRequestText = $"RestSharpExtensions.GetRequest({methodParameters});";
+                    httpRequestText = $"{httpRequestBeginning}RestSharpExtensions.GetRequest({methodParameters});";
                     break;
                 case Method.POST:
-                    httpRequestText = $"RestSharpExtensions.PostRequest({methodParameters});";
+                    httpRequestText = $"{httpRequestBeginning}RestSharpExtensions.PostRequest({methodParameters});";
                     break;
                 case Method.PUT:
-                    httpRequestText = $"RestSharpExtensions.PutRequest({methodParameters});";
+                    httpRequestText = $"{httpRequestBeginning}RestSharpExtensions.PutRequest({methodParameters});";
                     break;
                 case Method.DELETE:
-                    httpRequestText = $"RestSharpExtensions.DeleteRequest({methodParameters});";
+                    httpRequestText = $"{httpRequestBeginning}RestSharpExtensions.DeleteRequest({methodParameters});";
                     break;
                 default:
                     throw new ArgumentException("methodInfo.Method");                    
             }
 
-            body.AppendLine(httpRequestText + Environment.NewLine);
-            body.AppendLine($"var handle = Client.ExecuteAsync(request, r => taskCompletion.SetResult(r));{Environment.NewLine}");
-            body.AppendLine($"var response = await taskCompletion.Task;{Environment.NewLine}");
-            body.AppendLine($"return JsonConvert.DeserializeObject<{TypesHelper.GetTypeName(methodInfo.ReturnedType)}>(response.Content);");
+            statements.Add(ParseStatement(httpRequestText));
+            statements.Add(ParseStatement($"var handle = Client.ExecuteAsync(request, r => taskCompletion.SetResult(r));"));
+            statements.Add(ParseStatement($"var response = await taskCompletion.Task;"));
+            statements.Add(ParseStatement($"return JsonConvert.DeserializeObject<{TypesHelper.GetTypeName(methodInfo.ReturnedType)}>(response.Content);"));
 
-            return Block(ParseStatement(body.ToString()));
+            return Block(statements);
         }
     }
 }
