@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Roslyn.Codegen.ApiClient\Roslyn.Codegen.ApiClient.csproj" />
+    <ProjectReference Include="..\Roslyn.Codegen.WorkspaceParser\Roslyn.Codegen.WorkspaceParser.csproj" />
   </ItemGroup>
 
 </Project>
