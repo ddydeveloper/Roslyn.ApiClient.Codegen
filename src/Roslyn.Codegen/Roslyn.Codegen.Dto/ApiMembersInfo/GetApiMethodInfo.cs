@@ -7,7 +7,7 @@ namespace Roslyn.Codegen.ApiClient.ApiMembersInfo
     {
         public GetApiMethodInfo(string name, Type returnedType, Tuple<Type, string> data) 
             : base(name, RestSharp.Method.GET, returnedType, data)
-        {
+        { 
 
         }
     }

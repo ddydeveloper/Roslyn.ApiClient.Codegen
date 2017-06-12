@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn.Codegen.Misc", "Rosl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn.Codegen.WorkspaceParser", "Roslyn.Codegen.WorkspaceParser\Roslyn.Codegen.WorkspaceParser.csproj", "{3C370789-04A8-4C13-ACC6-F319815DCB1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn.Codegen.Dto", "Roslyn.Codegen.Dto\Roslyn.Codegen.Dto.csproj", "{313F4C88-4047-4E64-A1F1-D4002C095C56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3C370789-04A8-4C13-ACC6-F319815DCB1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C370789-04A8-4C13-ACC6-F319815DCB1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C370789-04A8-4C13-ACC6-F319815DCB1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313F4C88-4047-4E64-A1F1-D4002C095C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313F4C88-4047-4E64-A1F1-D4002C095C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313F4C88-4047-4E64-A1F1-D4002C095C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313F4C88-4047-4E64-A1F1-D4002C095C56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -30,6 +30,7 @@
     <Folder Include="Generated\" />
     <Folder Include="Generated\" />
     <Folder Include="Generated\" />
+    <Folder Include="Generated\" />
   </ItemGroup>
 
   <ItemGroup>
