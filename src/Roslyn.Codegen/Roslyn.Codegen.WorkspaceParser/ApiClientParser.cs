@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Roslyn.Codegen.ApiClient;
 using Roslyn.Codegen.ApiClient.ApiMembersInfo;
-//using Microsoft.CodeAnalysis.MsBuild;
+using Microsoft.CodeAnalysis.MsBuild;
 
 namespace Roslyn.Codegen.WorkspaceParser
 {
