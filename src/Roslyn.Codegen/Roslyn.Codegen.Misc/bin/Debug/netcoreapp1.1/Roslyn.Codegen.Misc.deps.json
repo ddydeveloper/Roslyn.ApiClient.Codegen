@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v1.1": {
-      "roslyn.codegen.misc/1.0.0": {
+      "Roslyn.Codegen.Misc/1.0.0": {
         "runtime": {
           "Roslyn.Codegen.Misc.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "roslyn.codegen.misc/1.0.0": {
+    "Roslyn.Codegen.Misc/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

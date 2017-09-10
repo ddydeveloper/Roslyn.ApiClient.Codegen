@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using Roslyn.Codegen.ApiClient;
 using Roslyn.Codegen.ApiClient.ApiMembersInfo;
-using Microsoft.CodeAnalysis.MsBuild;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslyn.Codegen.WorkspaceParser
 {
@@ -10,7 +13,10 @@ namespace Roslyn.Codegen.WorkspaceParser
     {
         public static List<ApiControllerInfo> GetApiControllersInfo()
         {
-            //var ws = MSBuildWorkspace.Create();
+            string solutionPath = @"C:\Users\...\PathToSolution\MySolution.sln";
+            var msWorkspace = MSBuildWorkspace.Create();
+
+            var solution = msWorkspace.OpenSolutionAsync(solutionPath).Result;
 
             var result = new List<ApiControllerInfo>();
             var controllerInfo = new ApiControllerInfo("Test");

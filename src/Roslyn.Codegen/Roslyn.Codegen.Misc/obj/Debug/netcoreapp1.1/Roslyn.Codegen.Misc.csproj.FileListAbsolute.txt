@@ -9,6 +9,8 @@ D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\bin\Debug\netc
 D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.dll
 D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\bin\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.pdb
 D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\obj\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.csprojResolveAssemblyReference.cache
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\obj\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.csproj.CoreCompileInputs.cache
+D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\obj\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.AssemblyInfoInputs.cache
 D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\obj\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.AssemblyInfo.cs
 D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\obj\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.dll
 D:\Projects\Roslyn.Codegen\src\Roslyn.Codegen\Roslyn.Codegen.Misc\obj\Debug\netcoreapp1.1\Roslyn.Codegen.Misc.pdb
