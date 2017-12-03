@@ -1,2 +1,2 @@
 # Roslyn.ApiClient.Codegen
-Application for generating API REST client for an exisitng WebAPI service
+The tool for the auto generating client class for an existing webapi service. 
