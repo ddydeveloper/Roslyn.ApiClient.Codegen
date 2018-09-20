@@ -11,7 +11,7 @@ namespace Roslyn.Codegen.Engine
         /// <param name="fileBody"></param>
         public static void GenerateFile(string fileName, string fileBody)
         {
-            var path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Roslyn.Codegen");
+            var path = Directory.GetParent(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))).FullName;
             path = Path.Combine(path, "Generated");
             path = Path.Combine(path, $"{fileName}.cs");
 
