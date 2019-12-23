@@ -1,2 +1,2 @@
 # Roslyn.ApiClient.Codegen
-A tool for the auto generating client class for an existing webapi service. 
+The number of projects to generate API client class for the existing webapi service written with Roslyn syntax factory. 
